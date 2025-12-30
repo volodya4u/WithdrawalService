@@ -24,8 +24,8 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.util.backoff.FixedBackOff;
 
-import com.appsdeveloperblog.payments.ws.core.error.NotRetryableException;
-import com.appsdeveloperblog.payments.ws.core.error.RetryableException;
+import com.appsdeveloperblog.ws.core.error.NotRetryableException;
+import com.appsdeveloperblog.ws.core.error.RetryableException;
 
 @Configuration
 public class KafkaConsumerConfiguration {
@@ -45,6 +45,9 @@ public class KafkaConsumerConfiguration {
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, environment.getProperty("spring.kafka.consumer.group-id"));
 		config.put(JsonDeserializer.TRUSTED_PACKAGES,
 				environment.getProperty("spring.kafka.consumer.properties.spring.json.trusted.packages"));
+
+		config.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG,
+				environment.getProperty("spring.kafka.consumer.isolation-level", "READ_COMMITTED").toLowerCase());
 
 		return new DefaultKafkaConsumerFactory<>(config);
 	}
